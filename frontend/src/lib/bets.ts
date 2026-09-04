@@ -168,6 +168,122 @@ export function filterByPeriod(bets: Aposta[], tf: Timeframe): Aposta[] {
   });
 }
 
+// ---- Advanced statistics ----
+const WIN_STATES: EstadoAposta[] = ["Ganha", "Meio ganho"];
+const LOSS_STATES: EstadoAposta[] = ["Perdida", "Meio perdido"];
+
+export function isWin(e: EstadoAposta): boolean {
+  return WIN_STATES.includes(e);
+}
+export function isLoss(e: EstadoAposta): boolean {
+  return LOSS_STATES.includes(e);
+}
+
+export interface SportStat {
+  sport: string;
+  lucro: number;
+  count: number;
+}
+
+export interface AdvancedStats {
+  wins: number;
+  losses: number;
+  decided: number; // wins + losses
+  winRate: number; // %
+  currentStreak: number; // positive = win streak, negative = loss streak
+  bestWinStreak: number;
+  worstLossStreak: number;
+  bySport: SportStat[];
+  form: { win: boolean; lucro: number }[]; // recent decided, oldest -> newest
+  biggestWin: Aposta | null;
+  biggestLoss: Aposta | null;
+  lucro: number;
+  totalApostado: number;
+  roi: number;
+}
+
+export function computeAdvancedStats(bets: Aposta[]): AdvancedStats {
+  const decidedBets = bets
+    .filter((b) => isWin(b.estado) || isLoss(b.estado))
+    .sort((a, b) => new Date(a.data).getTime() - new Date(b.data).getTime());
+
+  let wins = 0;
+  let losses = 0;
+  decidedBets.forEach((b) => (isWin(b.estado) ? wins++ : losses++));
+  const decided = wins + losses;
+  const winRate = decided > 0 ? (wins / decided) * 100 : 0;
+
+  // streaks
+  let bestWinStreak = 0;
+  let worstLossStreak = 0;
+  let runWin = 0;
+  let runLoss = 0;
+  decidedBets.forEach((b) => {
+    if (isWin(b.estado)) {
+      runWin++;
+      runLoss = 0;
+      if (runWin > bestWinStreak) bestWinStreak = runWin;
+    } else {
+      runLoss++;
+      runWin = 0;
+      if (runLoss > worstLossStreak) worstLossStreak = runLoss;
+    }
+  });
+  // current streak from the end
+  let currentStreak = 0;
+  if (decidedBets.length > 0) {
+    const lastWin = isWin(decidedBets[decidedBets.length - 1].estado);
+    for (let i = decidedBets.length - 1; i >= 0; i--) {
+      if (isWin(decidedBets[i].estado) === lastWin) currentStreak++;
+      else break;
+    }
+    if (!lastWin) currentStreak = -currentStreak;
+  }
+
+  // by sport
+  const sportMap: Record<string, SportStat> = {};
+  bets.forEach((b) => {
+    if (!sportMap[b.esporte]) sportMap[b.esporte] = { sport: b.esporte, lucro: 0, count: 0 };
+    sportMap[b.esporte].lucro += calcLucro(b);
+    sportMap[b.esporte].count++;
+  });
+  const bySport = Object.values(sportMap).sort((a, b) => Math.abs(b.lucro) - Math.abs(a.lucro));
+
+  // form (last 15 decided)
+  const form = decidedBets.slice(-15).map((b) => ({ win: isWin(b.estado), lucro: calcLucro(b) }));
+
+  // biggest win / loss
+  let biggestWin: Aposta | null = null;
+  let biggestLoss: Aposta | null = null;
+  bets.forEach((b) => {
+    const l = calcLucro(b);
+    if (l > 0 && (!biggestWin || l > calcLucro(biggestWin))) biggestWin = b;
+    if (l < 0 && (!biggestLoss || l < calcLucro(biggestLoss))) biggestLoss = b;
+  });
+
+  const lucro = bets.reduce((s, a) => s + calcLucro(a), 0);
+  const totalApostado = decidedBets.reduce((s, a) => s + a.valor, 0);
+  const roi = totalApostado > 0 ? (lucro / totalApostado) * 100 : 0;
+
+  return {
+    wins,
+    losses,
+    decided,
+    winRate,
+    currentStreak,
+    bestWinStreak,
+    worstLossStreak,
+    bySport,
+    form,
+    biggestWin,
+    biggestLoss,
+    lucro,
+    totalApostado,
+    roi,
+  };
+}
+
+
 export interface DayGroup {
   key: string;
   label: string;

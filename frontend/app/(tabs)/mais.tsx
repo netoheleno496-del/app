@@ -7,6 +7,7 @@ import { useRouter } from "expo-router";
 import { makeStyles, useTheme } from "@/src/theme";
 import AppHeader from "@/src/components/AppHeader";
 import { useAuth } from "@/src/context/AuthContext";
+import { useSelection } from "@/src/context/SelectionContext";
 import { useBankrolls, useAllBets } from "@/src/lib/queries";
 import { computeStats, signedBRL } from "@/src/lib/bets";
 
@@ -16,6 +17,7 @@ export default function MaisScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { user, signOut } = useAuth();
+  const { selectedId } = useSelection();
   const bankrolls = useBankrolls();
   const allBets = useAllBets();
 
@@ -70,6 +72,18 @@ export default function MaisScreen() {
             </Text>
           </View>
         </View>
+
+        <Pressable
+          style={styles.menuRow}
+          testID="mais-estatisticas"
+          onPress={() => router.push(selectedId ? "/estatisticas" : "/(tabs)/bancas")}
+        >
+          <View style={styles.menuLeft}>
+            <MaterialDesignIcons name="chart-arc" size={20} color={colors.brand} />
+            <Text style={styles.menuText}>Estatísticas</Text>
+          </View>
+          <MaterialDesignIcons name="chevron-right" size={20} color={colors.dim} />
+        </Pressable>
 
         <Pressable style={styles.logoutBtn} onPress={logout} testID="logout-button">
           <MaterialDesignIcons name="logout" size={20} color={colors.error} />
@@ -145,6 +159,19 @@ const useStyles = makeStyles((t) => ({
     borderColor: "rgba(239,68,68,0.3)",
     marginTop: t.spacing.sm,
   },
+  menuRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    height: 56,
+    paddingHorizontal: t.spacing.lg,
+    borderRadius: t.radius.md,
+    backgroundColor: t.colors.card,
+    borderWidth: 1,
+    borderColor: t.colors.border,
+  },
+  menuLeft: { flexDirection: "row", alignItems: "center", gap: t.spacing.md },
+  menuText: { color: t.colors.text, fontSize: 15, fontWeight: "700" },
   logoutText: { color: t.colors.error, fontSize: 15, fontWeight: "800" },
   version: { color: t.colors.faint, fontSize: 12, textAlign: "center", marginTop: t.spacing.md },
 }));

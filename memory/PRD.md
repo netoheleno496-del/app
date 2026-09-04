@@ -36,7 +36,8 @@ The uploaded artifact (`App peixe.tsx`) was a **web React prototype** with **no 
 - [x] (done 2026-06) Peixe Esperto shark logo on login + splash.
 - [x] (done 2026-06) Real betting-house logos via DeBounce logo API (`logo.debounce.com/{domain}`), curated domain map in `src/lib/casaLogos.ts`; colored-initials fallback for custom houses. (Clearbit API shut down Dec 2025.)
 - P1: "Estatísticas" richer charts (win rate, streaks, per-sport ROI).
-- P2: Bet stake as % of bankroll; multi-selection (múltiplas) bets.
+- [x] (done 2026-06) Tela de Estatísticas: donut de taxa de acerto, cartões de sequência (atual/melhor/pior), forma recente (V/D), lucro por esporte (barras), destaques maior ganho/perda. Filtro de período (Semana/Mês/Tudo). Libs: react-native-gifted-charts + react-native-svg. Acesso via Painel e aba Mais. Rota `app/estatisticas.tsx`, lógica em `computeAdvancedStats` (src/lib/bets.ts).
+- P2: Aposta como % da banca; apostas múltiplas.
 - P2: Export/share monthly report; filters by casa/esporte/status on Apostas.
 - P2: Edit hora with a time wheel; recurring/pending reminders.
 

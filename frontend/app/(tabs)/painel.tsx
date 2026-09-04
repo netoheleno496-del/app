@@ -138,10 +138,16 @@ export default function PainelScreen() {
           <PeriodBreakdown tf={tf} allBets={allBets} filtered={filtered} />
         )}
 
-        <Pressable style={styles.allBtn} onPress={() => router.push("/(tabs)/apostas")} testID="ver-apostas">
-          <Text style={styles.allBtnText}>Ver todas as apostas</Text>
-          <MaterialDesignIcons name="arrow-right" size={18} color={colors.text} />
-        </Pressable>
+        <View style={styles.actionRow}>
+          <Pressable style={styles.actionBtn} onPress={() => router.push("/estatisticas")} testID="ver-estatisticas">
+            <MaterialDesignIcons name="chart-arc" size={18} color={colors.brand} />
+            <Text style={styles.allBtnText}>Estatísticas</Text>
+          </Pressable>
+          <Pressable style={styles.actionBtn} onPress={() => router.push("/(tabs)/apostas")} testID="ver-apostas">
+            <MaterialDesignIcons name="format-list-bulleted" size={18} color={colors.text} />
+            <Text style={styles.allBtnText}>Apostas</Text>
+          </Pressable>
+        </View>
       </ScrollView>
 
       <BankrollEditModal
@@ -348,6 +354,19 @@ const useStyles = makeStyles((t) => ({
   yearCell: { width: "30.5%", flexGrow: 1, backgroundColor: t.colors.cardAlt, borderRadius: t.radius.sm, borderWidth: 1, borderColor: t.colors.border, padding: t.spacing.sm, gap: 2 },
   yearValue: { fontSize: 14, fontWeight: "800" },
   allBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: t.spacing.sm,
+    height: 50,
+    borderRadius: t.radius.md,
+    backgroundColor: t.colors.card,
+    borderWidth: 1,
+    borderColor: t.colors.border,
+  },
+  actionRow: { flexDirection: "row", gap: t.spacing.md },
+  actionBtn: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
