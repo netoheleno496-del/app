@@ -1,0 +1,176 @@
+{
+  "app_name": "Peixe Esperto",
+  "personality": "7 Dark-First Utility (with modern fintech gradients)",
+  "personality_one_liner": "A high-performance, command-center betting ledger using deep navy and teal/purple accents to deliver instant 'Am I winning?' clarity.",
+  "color": {
+    "surface": "#0B1120",
+    "onSurface": "#F8FAFC",
+    "surfaceSecondary": "#1E293B",
+    "onSurfaceSecondary": "#F1F5F9",
+    "surfaceTertiary": "#334155",
+    "onSurfaceTertiary": "#E2E8F0",
+    "surfaceInverse": "#F8FAFC",
+    "onSurfaceInverse": "#0B1120",
+    "brand": "#3B82F6",
+    "brandPrimary": "#2EBFAF",
+    "onBrandPrimary": "#022C22",
+    "brandSecondary": "#8B5CF6",
+    "onBrandSecondary": "#FFFFFF",
+    "brandTertiary": "#1D4ED8",
+    "onBrandTertiary": "#DBEAFE",
+    "success": "#22C55E",
+    "onSuccess": "#052E16",
+    "warning": "#F59E0B",
+    "onWarning": "#451A03",
+    "error": "#EF4444",
+    "onError": "#450A0A",
+    "info": "#0EA5E9",
+    "onInfo": "#082F49",
+    "border": "#334155",
+    "borderStrong": "#475569",
+    "divider": "#1E293B",
+    "muted": "#94A3B8",
+    "onBrand": "#FFFFFF"
+  },
+  "typography": {
+    "displayFontFamily": "Barlow Condensed",
+    "textFontFamily": "Satoshi",
+    "scale": {
+      "sm": 12,
+      "base": 14,
+      "lg": 16,
+      "xl": 20,
+      "2xl": 24
+    }
+  },
+  "spacing": {
+    "rule": "Dense but scannable. Prioritize logical grouping of metrics over empty space. Use tight spacing for related data points.",
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "2xl": 32,
+    "3xl": 48
+  },
+  "radius_tokens": {
+    "sm": 6,
+    "md": 12,
+    "lg": 20,
+    "pill": 999
+  },
+  "shadow_tier": "0",
+  "navigation": "bottom_tabs",
+  "icon_set": "Phosphor",
+  "glassmorphism": {
+    "enabled": "true",
+    "do's": [
+      "Use blur for the sticky tab bar, sticky headers over scrolling bets, and the FAB background.",
+      "Apply subtle frosted glass on top-level metric summary cards."
+    ],
+    "dont's": [
+      "Never blur dense list items or individual bet cards to maintain crisp rendering of numbers."
+    ]
+  },
+  "platform_libraries": {
+    "glass": {
+      "ios": "expo-glass-effect",
+      "android": "expo-blur",
+      "low_end_android_fallback": "solid surfaceSecondary"
+    },
+    "image": "expo-image",
+    "blur": "expo-blur",
+    "bottom_sheet": "@gorhom/bottom-sheet",
+    "animation": "react-native-reanimated",
+    "gesture": "react-native-gesture-handler"
+  },
+  "haptics": {
+    "primary_button_press": "impactLight",
+    "status_change_success": "notificationSuccess",
+    "status_change_error": "notificationError",
+    "tab_switch": "selection",
+    "bet_added": "impactMedium"
+  },
+  "screens": [
+    {
+      "name": "Auth",
+      "purpose": "Secure entry via email/password, styled with a glowing abstract hero background.",
+      "states": {
+        "loading": "Centered brand-colored spinner",
+        "empty": "N/A",
+        "error": "Inline text or toast"
+      },
+      "layout": "Hero image taking up the top 40% with a vertical gradient scrim fading into `surface` color at the bottom. Floating input fields (email, password) and a sticky primary CTA at the bottom."
+    },
+    {
+      "name": "Bankrolls List",
+      "purpose": "A high-level dashboard displaying multiple bankroll portfolios.",
+      "states": {
+        "loading": "Skeleton loaders matching card dimensions",
+        "empty": "Illustration of an empty vault/wallet + 'Create your first Bankroll'",
+        "error": "Error message with 'Retry' CTA"
+      },
+      "layout": "Grid or vertical stack of summary cards. Each card displays ROI, Progressão, and pending bets count using condensed display typography for the numbers. Include a gradient background on top-performing bankrolls."
+    },
+    {
+      "name": "Bankroll Detail (Home)",
+      "purpose": "Deep dive into a specific bankroll with performance metrics and period filters.",
+      "states": {
+        "loading": "Skeleton loaders for stats grid",
+        "empty": "No data illustration",
+        "error": "Error message with 'Retry' CTA"
+      },
+      "layout": "Sticky glass header. Segmented control (1d/1s/1m/1a) pinned below the header. A 2x2 grid of stat cards (Apostas, Lucros, ROI, Progressão) prominently displaying large metrics in `Barlow Condensed`."
+    },
+    {
+      "name": "Bets List",
+      "purpose": "Chronological ledger of all bets, grouped by month and day.",
+      "states": {
+        "loading": "Skeleton rows",
+        "empty": "No bets yet illustration + Add Bet CTA",
+        "error": "Error message with 'Retry' CTA"
+      },
+      "layout": "SectionList grouped by Month -> Day. Each row is a compact card with a 2px left border strip indicating status color (Green for Win, Red for Loss, Gray/Amber for Pending). Right-aligned stakes and profits."
+    },
+    {
+      "name": "Add Bet Form",
+      "purpose": "Input new bets quickly with minimal friction.",
+      "states": {
+        "loading": "Submitting spinner in CTA",
+        "empty": "N/A",
+        "error": "Validation errors under inputs"
+      },
+      "layout": "Single scrollable column. Labels above inputs. Horizontal scrolling chips for Betting House selector and Sport. Dedicated input for Odds and Stake. Sticky 'Save' CTA fixed to the bottom above the keyboard (KeyboardAvoidingView)."
+    },
+    {
+      "name": "Bet Detail (Bottom Sheet)",
+      "purpose": "View bet details and quickly update its settlement status.",
+      "states": {
+        "loading": "N/A",
+        "empty": "N/A",
+        "error": "N/A"
+      },
+      "layout": "Gorhom Bottom Sheet. Displays core bet info at the top. Grid of status buttons (Pendente, Ganha, Perdida, Reembolsada, Meio ganho, Meio perdido, Cashout, Cancelado) using respective semantic colors."
+    }
+  ],
+  "images": {
+    "hero_background": {
+      "url": "https://images.unsplash.com/photo-1654198340681-a2e0fc449f1b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODh8MHwxfHNlYXJjaHwyfHxkYXJrJTIwbmVvbiUyMGFic3RyYWN0JTIwZ2xvd2luZyUyMGJsdWUlMjBwdXJwbGUlMjBncmFkaWVudCUyMHRleHR1cmV8ZW58MHx8fHwxNzg4NDkxMDQ3fDA&ixlib=rb-4.1.0&q=85",
+      "dark": "https://images.unsplash.com/photo-1614850523011-8f49ffc73908?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODh8MHwxfHNlYXJjaHwxfHxkYXJrJTIwbmVvbiUyMGFic3RyYWN0JTIwZ2xvd2luZyUyMGJsdWUlMjBwdXJwbGUlMjBncmFkaWVudCUyMHRleHR1cmV8ZW58MHx8fHwxNzg4NDkxMDQ3fDA&ixlib=rb-4.1.0&q=85",
+      "alt": "Dark neon abstract glowing blue purple gradient texture"
+    },
+    "empty_bankroll": {
+      "url": "https://images.unsplash.com/photo-1634744536075-d22f42f88e54?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2ODl8MHwxfHNlYXJjaHwxfHxlbXB0eSUyMHdhbGxldCUyMGZpbmFuY2UlMjBmbGF0JTIwaWxsdXN0cmF0aW9uJTIwZGFyayUyMGJhY2tncm91bmR8ZW58MHx8fHwxNzg4NDkxMDUyfDA&ixlib=rb-4.1.0&q=85",
+      "dark": "https://images.unsplash.com/photo-1634744536075-d22f42f88e54?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2ODl8MHwxfHNlYXJjaHwxfHxlbXB0eSUyMHdhbGxldCUyMGZpbmFuY2UlMjBmbGF0JTIwaWxsdXN0cmF0aW9uJTIwZGFyayUyMGJhY2tncm91bmR8ZW58MHx8fHwxNzg4NDkxMDUyfDA&ixlib=rb-4.1.0&q=85",
+      "alt": "Abstract dark shapes representing empty data"
+    }
+  },
+  "instructions_to_main_agent": [
+    "Use 'Barlow Condensed' for all numeric displays (ROI, totals, profit, odds, stakes) to enforce a high-performance sports aesthetic. Keep body text and small labels in 'Satoshi'.",
+    "Design the bet list to mimic a financial ledger. Ensure status indicators (win/loss/pending) are immediately visible using a colored 2px left border or distinct colored status pills (Green for Ganha, Red for Perdida).",
+    "Implement the 'Add Bet' CTA as a central floating button (FAB) inside the bottom tab bar. It should use a translucent blur overlay or deep gradient to pop against the dark UI.",
+    "For betting houses (Bet365, Betano, Betfair, etc.), fetch their real PNG logos using the image_selector_tool. If unavailable, fallback to initials (e.g., 'B365') centered in a brandTertiary square. NEVER use generic vector icons for established brands.",
+    "Ensure all primary screens use the user's requested color scheme: deep navy (#0B1120) background, with blue to purple gradients (#3B82F6 to #8B5CF6) for highlights and teal (#2EBFAF) as the interactive primary brand token.",
+    "Always place a gradient scrim (transparent to surfaceInverse) between background imagery and text, especially on the auth/splash screen."
+  ]
+}

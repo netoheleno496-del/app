@@ -1,0 +1,38 @@
+{
+  "summary": "Full backend + frontend testing of Peixe Esperto Expo/RN app. Backend: 21/21 pytest cases passed covering auth (register/login/me, duplicate 409, wrong pass 401, no-token 401), bankrolls CRUD, bets CRUD, cross-device persistence (login-again returns same data), data isolation (user B cannot see/edit user A resources), casas default+custom, and soft-delete cascade. Frontend: mobile viewport 390x844, executed end-to-end flow via Playwright — register new account -> lands on empty Bancas -> create bankroll via header + -> tap card opens Painel with period tabs (Hoje/Semana/Mês/Tudo work using real keys 1d/1s/1m/1a) -> FAB opens add-bet -> casa selector shows 20 default houses and custom casa via search+add persists and gets selected -> save bet -> Apostas tab groups by month/day -> tap bet card opens BetSheet -> change status to Ganha updates -> edit bankroll via gear works -> logout from Mais returns to login. No red screens, no page errors. Only cosmetic React Native Web warnings (shadow* / pointerEvents deprecated) that are harmless.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": [
+      {"component": "RN Web styles", "issue": "Console warning: 'shadow*' style props are deprecated. Use 'boxShadow'. Non-blocking but should be migrated. Reference: styles across screens using shadowColor/shadowOffset/shadowOpacity/shadowRadius (search /app/frontend/**)"},
+      {"component": "RN Web props", "issue": "Console warning: props.pointerEvents is deprecated. Use style.pointerEvents. Non-blocking. Reference: navigation/tabs area (some library or component still uses the old prop)"}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_peixe_esperto_api.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "Optional: migrate deprecated shadow* style props to boxShadow across StyleSheet definitions to silence RN Web console warnings",
+    "Optional: replace props.pointerEvents usages with style.pointerEvents"
+  ],
+  "critical_code_review_comments": [
+    "server.py: clean() mutates dicts in-place and pops owner_id/deleted_at which is fine for GET responses; POST create_bankroll/create_bet correctly insert doc.copy() before cleaning — good.",
+    "server.py: get_current_user maps HTTPBearer 401; me/no-token returns 403 due to HTTPBearer auto_error (test accepts 401/403). Consider unifying to 401 for consistency.",
+    "server.py: DEFAULT_CASAS uses .copy() during register — user list is independent per user (correct).",
+    "No pagination on list endpoints (to_list 500/5000); acceptable at this scale.",
+    "Frontend testIDs cover all major interactions; period tabs use keys 1d/1s/1m/1a (Portuguese labels displayed correctly)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_peixe_esperto_api.py (created)",
+    "/app/test_reports/iteration_1.json (created)"
+  ],
+  "success_rate": { "backend": "100% (21/21)", "frontend": "100% of core flows (register, create bankroll, add bet with custom casa, change bet status, edit bankroll, period tabs, logout)" },
+  "seed_data_creation": "Ephemeral TEST_ users/bankrolls/bets created and cleaned up within the pytest run; also created UI test user TEST_ui_<ts>@example.com and one bankroll+bet under existing neto@test.com account.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Test file is /app/backend/tests/test_peixe_esperto_api.py — reuse it. Frontend BASE URL from EXPO_PUBLIC_BACKEND_URL. Period tab testIDs are period-1d / period-1s / period-1m / period-1a. Create-bankroll modal uses testIDs bankroll-name-input / bankroll-capital-input / bankroll-save. FAB is fab-add-bet. BetSheet status buttons are status-Pendente/Ganha/Perdida/Reembolsada.",
+  "rca_of_issue": "N/A — no bugs found. Original cross-device persistence issue is verified fixed: after login on a second token/session, the same bankroll & bet are returned (test_cross_device_persistence)."
+}
