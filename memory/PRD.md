@@ -33,7 +33,8 @@ The uploaded artifact (`App peixe.tsx`) was a **web React prototype** with **no 
 - [x] Toasts + haptics throughout; custom blur tab bar with center FAB.
 
 ## Backlog (prioritized)
-- P1: Betting-house real PNG logos (currently colored initials).
+- [x] (done 2026-06) Peixe Esperto shark logo on login + splash.
+- [x] (done 2026-06) Real betting-house logos via DeBounce logo API (`logo.debounce.com/{domain}`), curated domain map in `src/lib/casaLogos.ts`; colored-initials fallback for custom houses. (Clearbit API shut down Dec 2025.)
 - P1: "Estatísticas" richer charts (win rate, streaks, per-sport ROI).
 - P2: Bet stake as % of bankroll; multi-selection (múltiplas) bets.
 - P2: Export/share monthly report; filters by casa/esporte/status on Apostas.

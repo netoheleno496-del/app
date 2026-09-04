@@ -20,7 +20,7 @@ export default function Index() {
   return (
     <View style={styles.container} testID="splash-screen">
       <Image
-        source={require("../assets/images/icon.png")}
+        source={require("../assets/images/peixe-logo.jpg")}
         style={styles.logo}
         contentFit="contain"
       />
@@ -36,5 +36,5 @@ const useStyles = makeStyles((t) => ({
     alignItems: "center",
     justifyContent: "center",
   },
-  logo: { width: 96, height: 96, borderRadius: 20 },
+  logo: { width: 200, height: 200, borderRadius: 24 },
 }));

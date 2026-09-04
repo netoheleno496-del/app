@@ -61,23 +61,21 @@ export default function LoginScreen() {
   return (
     <View style={styles.root}>
       <View style={[styles.hero, { height: height * 0.42 }]}>
-        <Image
-          source={{
-            uri: "https://images.unsplash.com/photo-1614850523011-8f49ffc73908?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200",
-          }}
+        <LinearGradient
+          colors={["#1A2A4D", "#12203B", colors.surface]}
+          locations={[0, 0.5, 1]}
           style={styles.heroImg}
-          contentFit="cover"
         />
         <LinearGradient
-          colors={["transparent", "rgba(11,17,32,0.6)", colors.surface]}
-          locations={[0, 0.6, 1]}
+          colors={["rgba(139,92,246,0.18)", "transparent"]}
           style={styles.scrim}
         />
         <View style={[styles.heroContent, { paddingTop: insets.top + 24 }]}>
-          <View style={styles.logoWrap}>
-            <MaterialDesignIcons name="fish" size={34} color={colors.brand} />
-          </View>
-          <Text style={styles.brandName}>PEIXE ESPERTO</Text>
+          <Image
+            source={require("../assets/images/peixe-logo.jpg")}
+            style={styles.logoImg}
+            contentFit="contain"
+          />
           <Text style={styles.brandTag}>Gestão de banca inteligente</Text>
         </View>
       </View>
@@ -207,17 +205,7 @@ const useStyles = makeStyles((t) => ({
   heroImg: { ...StyleSheetAbsolute() },
   scrim: { ...StyleSheetAbsolute() },
   heroContent: { flex: 1, alignItems: "center", justifyContent: "flex-end", paddingBottom: 8 },
-  logoWrap: {
-    width: 68,
-    height: 68,
-    borderRadius: t.radius.lg,
-    backgroundColor: "rgba(46,191,175,0.12)",
-    borderWidth: 1,
-    borderColor: "rgba(46,191,175,0.4)",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: t.spacing.md,
-  },
+  logoImg: { width: 180, height: 180 },
   brandName: {
     color: t.colors.text,
     fontSize: 24,
